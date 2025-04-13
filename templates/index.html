@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<head>
+    <title>Calculate My Dahej</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const data = {
+                age: document.getElementById('age').value,
+                occupation: document.getElementById('occupation').value,
+                income: document.getElementById('income').value
+            };
+
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = "Estimated Dahej: ₹" + result.compensation;
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculate My Dahej</h1>
+    
+<p style="color:#b30000; font-style:italic; margin-bottom: 30px;">
+    Because love is priceless, but details matter. ❤️💸
+</p>
+
+    <form onsubmit="submitForm(event)">
+        <label>Age: <input type="number" id="age" required></label><br><br>
+        <label>Occupation:
+            <select id="occupation">
+                <option value="engineer">Engineer</option>
+                <option value="doctor">Doctor</option>
+                <option value="mba">MBA</option>
+                <option value="teacher">Teacher</option>
+                <option value="Nalla">Teacher</option>
+            </select>
+        </label><br><br>
+        <label>Any Cows/Goats:
+            <select id="Cows">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+        </select>
+        </label><br><br>
+        <label>Monthly Income: <input type="number" id="income" required></label><br><br>
+        <button type="submit">Calculate</button>
+    </form>
+    <h2 id="result"></h2>
+</body>
+</html>
