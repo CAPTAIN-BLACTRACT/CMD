@@ -24,7 +24,22 @@
         }
     </script>
 </head>
+
+
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+    <div style="text-align: right; margin: 10px;">
+        <a href="{{ url_for('logout') }}" style="color: red; text-decoration: none;">Logout</a>
+    </div>
     <h1>Calculate My Dahej</h1>
     
 <p style="color:#b30000; font-style:italic; margin-bottom: 30px;">
@@ -55,4 +70,13 @@
     </form>
     <h2 id="result"></h2>
 </body>
+
+<!-- this is message disappearing trick -->
+<script>
+    
+    setTimeout(function() {
+      const flashMessages = document.querySelectorAll('.flashes li');
+      flashMessages.forEach(msg => msg.style.display = 'none');
+    }, 3000); // 3 seconds
+  </script>
 </html>
