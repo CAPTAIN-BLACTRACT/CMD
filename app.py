@@ -1,8 +1,10 @@
+import os
 from flask import Flask, request, render_template, jsonify
 from compensation_logic import calculate_compensation
 from flask import    redirect, session, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -14,6 +16,48 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(120))
+    gender = db.Column(db.String(20))
+    profile_picture = db.Column(db.String(200)) 
+
+
+
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/profile')
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    user = User.query.get(session['user_id'])
+    return render_template('profile.html', user=user)
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user = User.query.get(session['user_id'])
+
+    user.username = request.form['username']
+    user.gender = request.form['gender']
+    user.email = request.form['email']
+
+    if 'profile_picture' in request.files:
+        picture = request.files['profile_picture']
+        if picture.filename != '':
+            filename = secure_filename(picture.filename)
+            picture_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            picture.save(picture_path)
+            user.profile_picture = filename
+
+    db.session.commit()
+    flash('Profile updated successfully!', 'success')
+    return redirect(url_for('profile'))
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])

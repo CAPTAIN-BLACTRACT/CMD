@@ -128,3 +128,62 @@ button:hover {
     font-weight: bold;
     color: #cc0000;
 }
+
+.profile-container {
+    background-color: #fff0f0;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 12px 25px rgba(179, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-info img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ffcccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.profile-details {
+    flex-grow: 1;
+}
+
+.profile-details p {
+    margin: 6px 0;
+    font-size: 1.1em;
+}
+
+.update-form {
+    margin-top: 20px;
+}
+
+.update-form input[type="file"] {
+    padding: 8px;
+    background-color: #fffafa;
+}
+
+.update-form label {
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .profile-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-info img {
+        margin-bottom: 20px;
+    }
+}
